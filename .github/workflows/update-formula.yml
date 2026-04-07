@@ -1,0 +1,101 @@
+name: Update Formula
+
+on:
+  repository_dispatch:
+    types: [formula-update]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+        with:
+          token: ${{ secrets.GH_TOKEN }}
+
+      - name: Download assets and compute SHA256
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+          TOOL: ${{ github.event.client_payload.tool }}
+          TAG: ${{ github.event.client_payload.tag }}
+          VERSION: ${{ github.event.client_payload.version }}
+        run: |
+          mkdir -p /tmp/assets
+          for PLATFORM in darwin-arm64 darwin-amd64 linux-amd64 linux-arm64; do
+            gh release download "$TAG" \
+              --repo "IceRhymers/$TOOL" \
+              --pattern "${TOOL}-${PLATFORM}" \
+              --dir /tmp/assets
+          done
+
+          # Strip leading 'v' from version if present
+          VERSION="${VERSION#v}"
+
+          # Compute SHA256s
+          SHA_DARWIN_ARM64=$(sha256sum /tmp/assets/${TOOL}-darwin-arm64 | awk '{print $1}')
+          SHA_DARWIN_AMD64=$(sha256sum /tmp/assets/${TOOL}-darwin-amd64 | awk '{print $1}')
+          SHA_LINUX_AMD64=$(sha256sum /tmp/assets/${TOOL}-linux-amd64 | awk '{print $1}')
+          SHA_LINUX_ARM64=$(sha256sum /tmp/assets/${TOOL}-linux-arm64 | awk '{print $1}')
+
+          FORMULA="Formula/${TOOL}.rb"
+
+          # Update version
+          sed -i "s/version \".*\"/version \"${VERSION}\"/" "$FORMULA"
+
+          # Update URLs
+          sed -i "s|releases/download/v[^/]*/\(${TOOL}-darwin-arm64\)|releases/download/v${VERSION}/\1|g" "$FORMULA"
+          sed -i "s|releases/download/v[^/]*/\(${TOOL}-darwin-amd64\)|releases/download/v${VERSION}/\1|g" "$FORMULA"
+          sed -i "s|releases/download/v[^/]*/\(${TOOL}-linux-amd64\)|releases/download/v${VERSION}/\1|g" "$FORMULA"
+          sed -i "s|releases/download/v[^/]*/\(${TOOL}-linux-arm64\)|releases/download/v${VERSION}/\1|g" "$FORMULA"
+
+          # Update SHA256s
+          python3 - <<'PYEOF'
+          import re, os, sys
+
+          tool = os.environ['TOOL']
+          formula_path = f"Formula/{tool}.rb"
+          shas = {
+              'darwin-arm64': os.environ['SHA_DARWIN_ARM64'],
+              'darwin-amd64': os.environ['SHA_DARWIN_AMD64'],
+              'linux-arm64':  os.environ['SHA_LINUX_ARM64'],
+              'linux-amd64':  os.environ['SHA_LINUX_AMD64'],
+          }
+
+          with open(formula_path) as f:
+              content = f.read()
+
+          for platform, sha in shas.items():
+              pattern = rf'(url "https://github\.com/IceRhymers/{re.escape(tool)}/releases/download/v[^/]+/{re.escape(tool)}-{re.escape(platform)}"\n\s+)sha256 "[^"]*"'
+              replacement = rf'\1sha256 "{sha}"'
+              content = re.sub(pattern, replacement, content)
+
+          with open(formula_path, 'w') as f:
+              f.write(content)
+          PYEOF
+
+          echo "SHA_DARWIN_ARM64=$SHA_DARWIN_ARM64" >> $GITHUB_ENV
+          echo "SHA_DARWIN_AMD64=$SHA_DARWIN_AMD64" >> $GITHUB_ENV
+          echo "SHA_LINUX_AMD64=$SHA_LINUX_AMD64" >> $GITHUB_ENV
+          echo "SHA_LINUX_ARM64=$SHA_LINUX_ARM64" >> $GITHUB_ENV
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+
+      - name: Open PR
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+          TOOL: ${{ github.event.client_payload.tool }}
+        run: |
+          BRANCH="update-${TOOL}-${VERSION}"
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git checkout -b "$BRANCH"
+          git add Formula/
+          git commit -m "chore: update ${TOOL} formula to v${VERSION}"
+          git push origin "$BRANCH"
+          gh pr create \
+            --title "chore: update ${TOOL} to v${VERSION}" \
+            --body "Automated formula update for ${TOOL} v${VERSION}." \
+            --base main \
+            --head "$BRANCH"
