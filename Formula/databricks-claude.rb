@@ -2,7 +2,7 @@ class DatabricksClaude < Formula
   desc "Transparent Databricks AI Gateway proxy for Claude Code"
   homepage "https://github.com/IceRhymers/databricks-claude"
   version "0.9.1"
-  license "Apache-2.0"
+  license "MIT"
 
   on_macos do
     if Hardware::CPU.arm?
