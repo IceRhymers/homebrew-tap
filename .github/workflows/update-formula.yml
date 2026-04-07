@@ -32,13 +32,13 @@ jobs:
           done
 
           # Strip leading 'v' from version if present
-          VERSION="${VERSION#v}"
+          export VERSION="${VERSION#v}"
 
           # Compute SHA256s
-          SHA_DARWIN_ARM64=$(sha256sum /tmp/assets/${TOOL}-darwin-arm64 | awk '{print $1}')
-          SHA_DARWIN_AMD64=$(sha256sum /tmp/assets/${TOOL}-darwin-amd64 | awk '{print $1}')
-          SHA_LINUX_AMD64=$(sha256sum /tmp/assets/${TOOL}-linux-amd64 | awk '{print $1}')
-          SHA_LINUX_ARM64=$(sha256sum /tmp/assets/${TOOL}-linux-arm64 | awk '{print $1}')
+          export SHA_DARWIN_ARM64=$(sha256sum /tmp/assets/${TOOL}-darwin-arm64 | awk '{print $1}')
+          export SHA_DARWIN_AMD64=$(sha256sum /tmp/assets/${TOOL}-darwin-amd64 | awk '{print $1}')
+          export SHA_LINUX_AMD64=$(sha256sum /tmp/assets/${TOOL}-linux-amd64 | awk '{print $1}')
+          export SHA_LINUX_ARM64=$(sha256sum /tmp/assets/${TOOL}-linux-arm64 | awk '{print $1}')
 
           FORMULA="Formula/${TOOL}.rb"
 
