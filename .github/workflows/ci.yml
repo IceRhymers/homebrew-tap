@@ -8,9 +8,9 @@ jobs:
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
-      - name: Set up Homebrew
-        uses: Homebrew/actions/setup-homebrew@main
+      - name: Tap this repo locally
+        run: brew tap IceRhymers/tap "${{ github.workspace }}"
       - name: Audit formulas
-        run: brew audit --strict --except=version databricks-claude databricks-codex databricks-opencode
+        run: brew audit --strict IceRhymers/tap/databricks-claude IceRhymers/tap/databricks-codex IceRhymers/tap/databricks-opencode
       - name: Style check
-        run: brew style databricks-claude databricks-codex databricks-opencode
+        run: brew style IceRhymers/tap/databricks-claude IceRhymers/tap/databricks-codex IceRhymers/tap/databricks-opencode
