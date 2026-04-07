@@ -2,7 +2,7 @@ class DatabricksOpencode < Formula
   desc "Transparent Databricks AI Gateway proxy for OpenCode CLI"
   homepage "https://github.com/IceRhymers/databricks-opencode"
   version "0.3.0"
-  license "Apache-2.0"
+  license "MIT"
 
   on_macos do
     if Hardware::CPU.arm?
