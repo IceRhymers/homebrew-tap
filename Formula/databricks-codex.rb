@@ -30,9 +30,7 @@ class DatabricksCodex < Formula
     binary = "databricks-codex-#{os}-#{arch}"
     chmod "+x", binary
     bin.install binary => "databricks-codex"
-    (bash_completion/"databricks-codex").write(Utils.safe_popen_read(bin/"databricks-codex", "completion", "bash"))
-    (zsh_completion/"_databricks-codex").write(Utils.safe_popen_read(bin/"databricks-codex", "completion", "zsh"))
-    (fish_completion/"databricks-codex.fish").write(Utils.safe_popen_read(bin/"databricks-codex", "completion", "fish"))
+    generate_completions_from_executable(bin/"databricks-codex", "completion")
   end
 
   test do

@@ -30,9 +30,7 @@ class DatabricksClaude < Formula
     binary = "databricks-claude-#{os}-#{arch}"
     chmod "+x", binary
     bin.install binary => "databricks-claude"
-    (bash_completion/"databricks-claude").write(Utils.safe_popen_read(bin/"databricks-claude", "completion", "bash"))
-    (zsh_completion/"_databricks-claude").write(Utils.safe_popen_read(bin/"databricks-claude", "completion", "zsh"))
-    (fish_completion/"databricks-claude.fish").write(Utils.safe_popen_read(bin/"databricks-claude", "completion", "fish"))
+    generate_completions_from_executable(bin/"databricks-claude", "completion")
   end
 
   test do

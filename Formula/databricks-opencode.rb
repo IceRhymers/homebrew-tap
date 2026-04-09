@@ -30,9 +30,7 @@ class DatabricksOpencode < Formula
     binary = "databricks-opencode-#{os}-#{arch}"
     chmod "+x", binary
     bin.install binary => "databricks-opencode"
-    (bash_completion/"databricks-opencode").write(Utils.safe_popen_read(bin/"databricks-opencode", "completion", "bash"))
-    (zsh_completion/"_databricks-opencode").write(Utils.safe_popen_read(bin/"databricks-opencode", "completion", "zsh"))
-    (fish_completion/"databricks-opencode.fish").write(Utils.safe_popen_read(bin/"databricks-opencode", "completion", "fish"))
+    generate_completions_from_executable(bin/"databricks-opencode", "completion")
   end
 
   test do
