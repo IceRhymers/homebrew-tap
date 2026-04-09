@@ -27,10 +27,16 @@ class DatabricksOpencode < Formula
   def install
     os = OS.mac? ? "darwin" : "linux"
     arch = Hardware::CPU.arm? ? "arm64" : "amd64"
-    bin.install "databricks-opencode-#{os}-#{arch}" => "databricks-opencode"
+    binary = "databricks-opencode-#{os}-#{arch}"
+    chmod "+x", binary
+    bin.install binary => "databricks-opencode"
+    generate_completions_from_executable(bin/"databricks-opencode", "completion")
   end
 
   test do
     assert_match version.to_s, shell_output("#{bin}/databricks-opencode --version 2>&1")
+    assert_match "databricks-opencode", shell_output("#{bin}/databricks-opencode completion bash")
+    assert_match "databricks-opencode", shell_output("#{bin}/databricks-opencode completion zsh")
+    assert_match "databricks-opencode", shell_output("#{bin}/databricks-opencode completion fish")
   end
 end

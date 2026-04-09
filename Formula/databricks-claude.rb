@@ -27,10 +27,16 @@ class DatabricksClaude < Formula
   def install
     os = OS.mac? ? "darwin" : "linux"
     arch = Hardware::CPU.arm? ? "arm64" : "amd64"
-    bin.install "databricks-claude-#{os}-#{arch}" => "databricks-claude"
+    binary = "databricks-claude-#{os}-#{arch}"
+    chmod "+x", binary
+    bin.install binary => "databricks-claude"
+    generate_completions_from_executable(bin/"databricks-claude", "completion")
   end
 
   test do
     assert_match version.to_s, shell_output("#{bin}/databricks-claude --version 2>&1")
+    assert_match "databricks-claude", shell_output("#{bin}/databricks-claude completion bash")
+    assert_match "databricks-claude", shell_output("#{bin}/databricks-claude completion zsh")
+    assert_match "databricks-claude", shell_output("#{bin}/databricks-claude completion fish")
   end
 end
