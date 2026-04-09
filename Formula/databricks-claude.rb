@@ -28,6 +28,7 @@ class DatabricksClaude < Formula
     os = OS.mac? ? "darwin" : "linux"
     arch = Hardware::CPU.arm? ? "arm64" : "amd64"
     bin.install "databricks-claude-#{os}-#{arch}" => "databricks-claude"
+    generate_completions_from_executable(bin/"databricks-claude", "completion", shell_parameter_format: :arg)
   end
 
   test do
