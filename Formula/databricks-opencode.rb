@@ -27,7 +27,9 @@ class DatabricksOpencode < Formula
   def install
     os = OS.mac? ? "darwin" : "linux"
     arch = Hardware::CPU.arm? ? "arm64" : "amd64"
-    bin.install "databricks-opencode-#{os}-#{arch}" => "databricks-opencode"
+    binary = "databricks-opencode-#{os}-#{arch}"
+    chmod "+x", binary
+    bin.install binary => "databricks-opencode"
     generate_completions_from_executable(bin/"databricks-opencode", "completion", shell_parameter_format: :arg)
   end
 

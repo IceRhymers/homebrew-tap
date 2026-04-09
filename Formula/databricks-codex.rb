@@ -27,7 +27,9 @@ class DatabricksCodex < Formula
   def install
     os = OS.mac? ? "darwin" : "linux"
     arch = Hardware::CPU.arm? ? "arm64" : "amd64"
-    bin.install "databricks-codex-#{os}-#{arch}" => "databricks-codex"
+    binary = "databricks-codex-#{os}-#{arch}"
+    chmod "+x", binary
+    bin.install binary => "databricks-codex"
     generate_completions_from_executable(bin/"databricks-codex", "completion", shell_parameter_format: :arg)
   end
 
