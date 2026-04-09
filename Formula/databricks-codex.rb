@@ -33,5 +33,8 @@ class DatabricksCodex < Formula
 
   test do
     assert_match version.to_s, shell_output("#{bin}/databricks-codex --version 2>&1")
+    assert_match "databricks-codex", shell_output("#{bin}/databricks-codex completion bash")
+    assert_match "databricks-codex", shell_output("#{bin}/databricks-codex completion zsh")
+    assert_match "databricks-codex", shell_output("#{bin}/databricks-codex completion fish")
   end
 end

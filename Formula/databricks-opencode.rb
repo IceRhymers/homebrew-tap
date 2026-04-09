@@ -33,5 +33,8 @@ class DatabricksOpencode < Formula
 
   test do
     assert_match version.to_s, shell_output("#{bin}/databricks-opencode --version 2>&1")
+    assert_match "databricks-opencode", shell_output("#{bin}/databricks-opencode completion bash")
+    assert_match "databricks-opencode", shell_output("#{bin}/databricks-opencode completion zsh")
+    assert_match "databricks-opencode", shell_output("#{bin}/databricks-opencode completion fish")
   end
 end

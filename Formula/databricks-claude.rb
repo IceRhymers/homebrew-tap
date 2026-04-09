@@ -33,5 +33,8 @@ class DatabricksClaude < Formula
 
   test do
     assert_match version.to_s, shell_output("#{bin}/databricks-claude --version 2>&1")
+    assert_match "databricks-claude", shell_output("#{bin}/databricks-claude completion bash")
+    assert_match "databricks-claude", shell_output("#{bin}/databricks-claude completion zsh")
+    assert_match "databricks-claude", shell_output("#{bin}/databricks-claude completion fish")
   end
 end
