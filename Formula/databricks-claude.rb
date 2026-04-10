@@ -1,26 +1,26 @@
 class DatabricksClaude < Formula
   desc "Transparent Databricks AI Gateway proxy for Claude Code"
   homepage "https://github.com/IceRhymers/databricks-claude"
-  version "0.11.0"
+  version "0.12.1"
   license "MIT"
 
   on_macos do
     if Hardware::CPU.arm?
-      url "https://github.com/IceRhymers/databricks-claude/releases/download/v0.11.0/databricks-claude-darwin-arm64"
-      sha256 "48497c3aa35f32d7a21cc87aa371bbe7cc41f88fb96259dd16ca1846803325d7"
+      url "https://github.com/IceRhymers/databricks-claude/releases/download/v0.12.1/databricks-claude-darwin-arm64"
+      sha256 "74a627ef22bcc318419a9388426bc1afb62e4e7976b47b081a9393840bb57440"
     else
-      url "https://github.com/IceRhymers/databricks-claude/releases/download/v0.11.0/databricks-claude-darwin-amd64"
-      sha256 "dc73ad579a62b37cc0b9db4cc9c16e9e2e9c0e6a959ffa3bb3fc3e385f73dda3"
+      url "https://github.com/IceRhymers/databricks-claude/releases/download/v0.12.1/databricks-claude-darwin-amd64"
+      sha256 "792bbe9e02459cd42d9474048248b10e2e97921159911d210abfdf44132b96b4"
     end
   end
 
   on_linux do
     if Hardware::CPU.arm?
-      url "https://github.com/IceRhymers/databricks-claude/releases/download/v0.11.0/databricks-claude-linux-arm64"
-      sha256 "aca3e2061659bca4349ca066801930de37263a3faf4cc4df3e3b4e06f2dcf733"
+      url "https://github.com/IceRhymers/databricks-claude/releases/download/v0.12.1/databricks-claude-linux-arm64"
+      sha256 "cd88155b8912e47f573098e9d6a8ca6f29ea9d076b3580fe3d21219b02bc083e"
     else
-      url "https://github.com/IceRhymers/databricks-claude/releases/download/v0.11.0/databricks-claude-linux-amd64"
-      sha256 "a3a9762387db7fcf5fadb8cec3a558621ddba197520c0c56158847d43d166f67"
+      url "https://github.com/IceRhymers/databricks-claude/releases/download/v0.12.1/databricks-claude-linux-amd64"
+      sha256 "5cade2dd30f9334f3dbb6c6d4128cc0e5cb1587cfbc040dd49188447083e1256"
     end
   end
 
