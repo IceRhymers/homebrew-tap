@@ -30,6 +30,10 @@ class DatabricksClaude < Formula
     binary = "databricks-claude-#{os}-#{arch}"
     chmod "+x", binary
     bin.install binary => "databricks-claude"
+    # Claude Desktop's inferenceCredentialHelper config points at a binary
+    # path with no arguments. The wrapper dispatches on argv[0]: invoking it
+    # under this name routes directly to the credential-helper code path.
+    bin.install_symlink "databricks-claude" => "databricks-claude-credential-helper"
     generate_completions_from_executable(bin/"databricks-claude", "completion")
   end
 
@@ -38,5 +42,8 @@ class DatabricksClaude < Formula
     assert_match "databricks-claude", shell_output("#{bin}/databricks-claude completion bash")
     assert_match "databricks-claude", shell_output("#{bin}/databricks-claude completion zsh")
     assert_match "databricks-claude", shell_output("#{bin}/databricks-claude completion fish")
+    assert_predicate bin/"databricks-claude-credential-helper", :symlink?
+    assert_equal (bin/"databricks-claude").realpath,
+                 (bin/"databricks-claude-credential-helper").realpath
   end
 end
