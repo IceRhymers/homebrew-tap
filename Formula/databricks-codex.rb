@@ -1,26 +1,26 @@
 class DatabricksCodex < Formula
   desc "Transparent Databricks AI Gateway proxy for OpenAI Codex CLI"
   homepage "https://github.com/IceRhymers/databricks-codex"
-  version "0.9.0"
+  version "0.10.0"
   license "MIT"
 
   on_macos do
     if Hardware::CPU.arm?
-      url "https://github.com/IceRhymers/databricks-codex/releases/download/v0.9.0/databricks-codex-darwin-arm64"
-      sha256 "10e600328ab2f7a4d1f017fcb1f938b68a8b66d19b2af7db6e9584bd777d6c7a"
+      url "https://github.com/IceRhymers/databricks-codex/releases/download/v0.10.0/databricks-codex-darwin-arm64"
+      sha256 "1e125deaae1f75842e9b8187ff26d8f00372e77eb1240c63e2f09d9c24b6b012"
     else
-      url "https://github.com/IceRhymers/databricks-codex/releases/download/v0.9.0/databricks-codex-darwin-amd64"
-      sha256 "cb241790c750f1e4337a0e5743476f8e79102db99baf27e265e008f90d5fdf09"
+      url "https://github.com/IceRhymers/databricks-codex/releases/download/v0.10.0/databricks-codex-darwin-amd64"
+      sha256 "faf0a6fa5e3d1b06cf508b92476fd03ad1bab9b245d73383d2e1596ad9546ee5"
     end
   end
 
   on_linux do
     if Hardware::CPU.arm?
-      url "https://github.com/IceRhymers/databricks-codex/releases/download/v0.9.0/databricks-codex-linux-arm64"
-      sha256 "b5ecde2f177a982e3814d49f3ac6f6a63650368e73b3bb5aec0f185349284991"
+      url "https://github.com/IceRhymers/databricks-codex/releases/download/v0.10.0/databricks-codex-linux-arm64"
+      sha256 "41cd7a2778365996938995e689ce2660288f896a6a5f556e38b83d67d5804b72"
     else
-      url "https://github.com/IceRhymers/databricks-codex/releases/download/v0.9.0/databricks-codex-linux-amd64"
-      sha256 "596638c6920f5e57a427408800270543e4404d96d7b99ae64fb56996f3ffc46c"
+      url "https://github.com/IceRhymers/databricks-codex/releases/download/v0.10.0/databricks-codex-linux-amd64"
+      sha256 "3a509837e9ff9d56116c03fbc94bf9600a212a9904a616c53d40b6459a007e7a"
     end
   end
 
