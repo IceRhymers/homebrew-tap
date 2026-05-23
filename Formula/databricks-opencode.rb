@@ -1,26 +1,26 @@
 class DatabricksOpencode < Formula
   desc "Transparent Databricks AI Gateway proxy for OpenCode CLI"
   homepage "https://github.com/IceRhymers/databricks-opencode"
-  version "0.7.0"
+  version "1.0.0"
   license "MIT"
 
   on_macos do
     if Hardware::CPU.arm?
-      url "https://github.com/IceRhymers/databricks-opencode/releases/download/v0.7.0/databricks-opencode-darwin-arm64"
-      sha256 "c15136943e9c4acad303fddaad98986b8fdc7a9240bbb0fdbc03a5c8becec778"
+      url "https://github.com/IceRhymers/databricks-opencode/releases/download/v1.0.0/databricks-opencode-darwin-arm64"
+      sha256 "030b6467d60dd150366b06297f4b06cff201c76a2f20997ce5e15e28f012ca04"
     else
-      url "https://github.com/IceRhymers/databricks-opencode/releases/download/v0.7.0/databricks-opencode-darwin-amd64"
-      sha256 "89177c57dae81a0c63aa0d1280bcf54f0db599fbaa0156424840a101fa6cb401"
+      url "https://github.com/IceRhymers/databricks-opencode/releases/download/v1.0.0/databricks-opencode-darwin-amd64"
+      sha256 "14c10c18e7d6044a71842a3e8555e619acdb52aab70fcff36de5eccc77ff8c17"
     end
   end
 
   on_linux do
     if Hardware::CPU.arm?
-      url "https://github.com/IceRhymers/databricks-opencode/releases/download/v0.7.0/databricks-opencode-linux-arm64"
-      sha256 "48b0ce2e4af9e76cd2ed1a1e7ce6baec043104e3484b70e9b695e2132d747f76"
+      url "https://github.com/IceRhymers/databricks-opencode/releases/download/v1.0.0/databricks-opencode-linux-arm64"
+      sha256 "d8d77c7c8729cca2feb5a1f750f10f48241e08ddc63a4f9554c96d677d1b7929"
     else
-      url "https://github.com/IceRhymers/databricks-opencode/releases/download/v0.7.0/databricks-opencode-linux-amd64"
-      sha256 "859c9143530618ff171de7da528bea0ca1a62072c4131b5dddb7c93bbdaed48a"
+      url "https://github.com/IceRhymers/databricks-opencode/releases/download/v1.0.0/databricks-opencode-linux-amd64"
+      sha256 "23f4dd4fa8cdb857fcc0aaca61ec5718775a8c0a919f4212876c76d4a6341150"
     end
   end
 
