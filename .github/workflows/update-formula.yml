@@ -24,9 +24,10 @@ jobs:
           VERSION: ${{ github.event.client_payload.version }}
         run: |
           mkdir -p /tmp/assets
+          # All tools release lockstep from the single monorepo; asset names stay per-tool.
           for PLATFORM in darwin-arm64 darwin-amd64 linux-amd64 linux-arm64; do
             gh release download "$TAG" \
-              --repo "IceRhymers/$TOOL" \
+              --repo "IceRhymers/databricks-agents" \
               --pattern "${TOOL}-${PLATFORM}" \
               --dir /tmp/assets
           done
@@ -68,9 +69,16 @@ jobs:
               content = f.read()
 
           for platform, sha in shas.items():
-              pattern = rf'(url "https://github\.com/IceRhymers/{re.escape(tool)}/releases/download/v[^/]+/{re.escape(tool)}-{re.escape(platform)}"\n\s+)sha256 "[^"]*"'
+              pattern = rf'(url "https://github\.com/IceRhymers/databricks-agents/releases/download/v[^/]+/{re.escape(tool)}-{re.escape(platform)}"\n\s+)sha256 "[^"]*"'
               replacement = rf'\1sha256 "{sha}"'
-              content = re.sub(pattern, replacement, content)
+              content, n = re.subn(pattern, replacement, content)
+              # A silent no-match would ship a bumped version with a stale sha256.
+              if n != 1:
+                  sys.exit(
+                      f"{formula_path}: expected 1 monorepo url/sha256 block for "
+                      f"{tool}-{platform}, matched {n}. Formula may still point at "
+                      f"an archived per-tool repo."
+                  )
 
           with open(formula_path, 'w') as f:
               f.write(content)
